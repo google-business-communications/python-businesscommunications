@@ -1,17 +1,3 @@
-# Copyright 2020 Google LLC. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """Generated message classes for businesscommunications version v1.
 
 """
@@ -139,8 +125,7 @@ class BusinessMessagesAgent(_messages.Message):
   Messages:
     ConversationalSettingsValue: Required. Conversational settings for an
       agent, mapped to a locale. Locale is represented by a well-formed [IETF
-      BCP 47](https://tools.ietf.org/html/bcp47) language tag. *Note*:
-      Currently, Business Messages only supports the "en" locale.
+      BCP 47](https://tools.ietf.org/html/bcp47) language tag.
 
   Fields:
     additionalAgentInteractions: Optional. Additional agent interaction
@@ -149,11 +134,10 @@ class BusinessMessagesAgent(_messages.Message):
       experience. Defined by the platform.
     conversationalSettings: Required. Conversational settings for an agent,
       mapped to a locale. Locale is represented by a well-formed [IETF BCP
-      47](https://tools.ietf.org/html/bcp47) language tag. *Note*: Currently,
-      Business Messages only supports the "en" locale.
+      47](https://tools.ietf.org/html/bcp47) language tag.
     customAgentId: Optional. A partner-specified identifier for the agent. The
       identifier is passed alongside all messages sent to the agent.
-    defaultLocale: Optional. The default locale for the agent. Must match a
+    defaultLocale: Required. The default locale for the agent. Must match a
       locale defined in `conversationalSettings`.
     entryPointConfigs: Optional. List of entry point configurations. Not
       modifiable after agent verification.
@@ -173,8 +157,7 @@ class BusinessMessagesAgent(_messages.Message):
   class ConversationalSettingsValue(_messages.Message):
     r"""Required. Conversational settings for an agent, mapped to a locale.
     Locale is represented by a well-formed [IETF BCP
-    47](https://tools.ietf.org/html/bcp47) language tag. *Note*: Currently,
-    Business Messages only supports the "en" locale.
+    47](https://tools.ietf.org/html/bcp47) language tag.
 
     Messages:
       AdditionalProperty: An additional property for a
@@ -687,10 +670,9 @@ class ConversationStarters(_messages.Message):
 
 
 class ConversationalSetting(_messages.Message):
-  r"""Conversational setting for an agent. Each locale has its own
+  r"""Conversational setting for an agent or location. Each locale has its own
   conversational settings. Locale is represented by a well-formed [IETF BCP
-  47](https://tools.ietf.org/html/bcp47) language tag. *Note*: Currently,
-  Business Messages only supports the "en" locale.
+  47](https://tools.ietf.org/html/bcp47) language tag.
 
   Fields:
     conversationStarters: Optional. Details about the agent's conversation
@@ -837,20 +819,17 @@ class Location(_messages.Message):
 
   Messages:
     ConversationalSettingsValue: Optional. Conversational settings for an
-      agent, mapped to a locale. Locale is represented by a well-formed [IETF
-      BCP 47](https://tools.ietf.org/html/bcp47) language tag. **Note**:
-      Currently, Business Messages only supports the "en" locale.
+      location, mapped to a locale. Locale is represented by a well-formed
+      [IETF BCP 47](https://tools.ietf.org/html/bcp47) language tag.
 
   Fields:
     agent: Required. The name of the agent associated with the location. If
       the brand identifier is "1234" and the agent identifier is "5678", this
       field resolves to "brands/1234/agents/5678".
-    conversationalSettings: Optional. Conversational settings for an agent,
+    conversationalSettings: Optional. Conversational settings for an location,
       mapped to a locale. Locale is represented by a well-formed [IETF BCP
-      47](https://tools.ietf.org/html/bcp47) language tag. **Note**:
-      Currently, Business Messages only supports the "en" locale.
-    defaultLocale: Optional. The default locale for the location. Must match a
-      locale defined in `conversationalSettings`.
+      47](https://tools.ietf.org/html/bcp47) language tag.
+    defaultLocale: Required. The default locale for the location.
     locationEntryPointConfigs: Required. List of entry point configurations
       for locations. Not modifiable after being available to users through an
       agent.
@@ -858,20 +837,18 @@ class Location(_messages.Message):
       conversational experience. Defined by the platform.
     name: The unique identifier of the location. Read-only. Defined by the
       platform.
-    placeId: Required. The [Place
-      ID](https://developers.google.com/places/place-id), or unique identifier
-      used in Google Maps, for the location. Not modifiable after being
-      available to users through an agent.
+    placeId: Required. The [Place ID](https://developers.google.com/places
+      /place-id), or unique identifier used in Google Maps, for the location.
+      Not modifiable after being available to users through an agent.
     testUrls: Output only. URLs for testing the location's conversational
       experience. Defined by the platform.
   """
 
   @encoding.MapUnrecognizedFields('additionalProperties')
   class ConversationalSettingsValue(_messages.Message):
-    r"""Optional. Conversational settings for an agent, mapped to a locale.
+    r"""Optional. Conversational settings for an location, mapped to a locale.
     Locale is represented by a well-formed [IETF BCP
-    47](https://tools.ietf.org/html/bcp47) language tag. **Note**: Currently,
-    Business Messages only supports the "en" locale.
+    47](https://tools.ietf.org/html/bcp47) language tag.
 
     Messages:
       AdditionalProperty: An additional property for a
@@ -1048,7 +1025,7 @@ class PrivacyPolicy(_messages.Message):
   r"""Privacy policy details for an agent.
 
   Fields:
-    url: Required. The URL for the privacy policy. Shared across all locales.
+    url: Required. The URL for the privacy policy.
   """
 
   url = _messages.StringField(1)
@@ -1151,7 +1128,7 @@ class StandardQueryParameters(_messages.Message):
 
   f__xgafv = _messages.EnumField('FXgafvValueValuesEnum', 1)
   access_token = _messages.StringField(2)
-  alt = _messages.EnumField('AltValueValuesEnum', 3, default='json')
+  alt = _messages.EnumField('AltValueValuesEnum', 3, default=u'json')
   callback = _messages.StringField(4)
   fields = _messages.StringField(5)
   key = _messages.StringField(6)
