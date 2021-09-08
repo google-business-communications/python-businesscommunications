@@ -39,10 +39,125 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
         default_global_params=default_global_params,
         additional_http_headers=additional_http_headers,
         response_encoding=response_encoding)
+    self.brands_agents_dialogflowAssociation_knowledgebases_documents = self.BrandsAgentsDialogflowAssociationKnowledgebasesDocumentsService(self)
+    self.brands_agents_dialogflowAssociation_knowledgebases = self.BrandsAgentsDialogflowAssociationKnowledgebasesService(self)
+    self.brands_agents_dialogflowAssociation = self.BrandsAgentsDialogflowAssociationService(self)
     self.brands_agents = self.BrandsAgentsService(self)
     self.brands_locations = self.BrandsLocationsService(self)
     self.brands = self.BrandsService(self)
     self.partners = self.PartnersService(self)
+    self.surveyQuestions = self.SurveyQuestionsService(self)
+
+  class BrandsAgentsDialogflowAssociationKnowledgebasesDocumentsService(base_api.BaseApiService):
+    """Service class for the brands_agents_dialogflowAssociation_knowledgebases_documents resource."""
+
+    _NAME = 'brands_agents_dialogflowAssociation_knowledgebases_documents'
+
+    def __init__(self, client):
+      super(BusinesscommunicationsV1.BrandsAgentsDialogflowAssociationKnowledgebasesDocumentsService, self).__init__(client)
+      self._upload_configs = {
+          }
+
+    def Create(self, request, global_params=None):
+      r"""Creates a document in a Dialogflow project knowledge base. Creating a document may take 2-3 minutes. To check the document status, get the agent data and check the document's `operationInfo`.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesDocumentsCreateRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Document) The response message.
+      """
+      config = self.GetMethodConfig('Create')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Create.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/dialogflowAssociation/knowledgebases/{knowledgebasesId}/documents',
+        http_method='POST',
+        method_id='businesscommunications.brands.agents.dialogflowAssociation.knowledgebases.documents.create',
+        ordered_params=['parent'],
+        path_params=['parent'],
+        query_params=[],
+        relative_path='v1/{+parent}/documents',
+        request_field='document',
+        request_type_name='BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesDocumentsCreateRequest',
+        response_type_name='Document',
+        supports_download=False,
+    )
+
+    def Delete(self, request, global_params=None):
+      r"""Deletes a document in a Dialogflow project knowledge base. Deleting a document may take 2-3 minutes. To check the document status, get the agent data and check the document's `operationInfo`.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesDocumentsDeleteRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Empty) The response message.
+      """
+      config = self.GetMethodConfig('Delete')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Delete.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/dialogflowAssociation/knowledgebases/{knowledgebasesId}/documents/{documentsId}',
+        http_method='DELETE',
+        method_id='businesscommunications.brands.agents.dialogflowAssociation.knowledgebases.documents.delete',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=[],
+        relative_path='v1/{+name}',
+        request_field='',
+        request_type_name='BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesDocumentsDeleteRequest',
+        response_type_name='Empty',
+        supports_download=False,
+    )
+
+  class BrandsAgentsDialogflowAssociationKnowledgebasesService(base_api.BaseApiService):
+    """Service class for the brands_agents_dialogflowAssociation_knowledgebases resource."""
+
+    _NAME = 'brands_agents_dialogflowAssociation_knowledgebases'
+
+    def __init__(self, client):
+      super(BusinesscommunicationsV1.BrandsAgentsDialogflowAssociationKnowledgebasesService, self).__init__(client)
+      self._upload_configs = {
+          }
+
+    def Create(self, request, global_params=None):
+      r"""Creates a knowledge base in a Dialogflow project.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesCreateRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Knowledgebase) The response message.
+      """
+      config = self.GetMethodConfig('Create')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Create.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/dialogflowAssociation/knowledgebases',
+        http_method='POST',
+        method_id='businesscommunications.brands.agents.dialogflowAssociation.knowledgebases.create',
+        ordered_params=['parent'],
+        path_params=['parent'],
+        query_params=[],
+        relative_path='v1/{+parent}/knowledgebases',
+        request_field='knowledgebase',
+        request_type_name='BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesCreateRequest',
+        response_type_name='Knowledgebase',
+        supports_download=False,
+    )
+
+  class BrandsAgentsDialogflowAssociationService(base_api.BaseApiService):
+    """Service class for the brands_agents_dialogflowAssociation resource."""
+
+    _NAME = 'brands_agents_dialogflowAssociation'
+
+    def __init__(self, client):
+      super(BusinesscommunicationsV1.BrandsAgentsDialogflowAssociationService, self).__init__(client)
+      self._upload_configs = {
+          }
 
   class BrandsAgentsService(base_api.BaseApiService):
     """Service class for the brands_agents resource."""
@@ -53,6 +168,33 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
       super(BusinesscommunicationsV1.BrandsAgentsService, self).__init__(client)
       self._upload_configs = {
           }
+
+    def AssociateDialogflow(self, request, global_params=None):
+      r"""Associate a Dialogflow project with an agent. The association may take 2-3 minutes. To check the association status, get the agent data and check the agent's `dialogflowAssociation.operationInfo`.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsAssociateDialogflowRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (DialogflowAssociation) The response message.
+      """
+      config = self.GetMethodConfig('AssociateDialogflow')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    AssociateDialogflow.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}:associateDialogflow',
+        http_method='POST',
+        method_id='businesscommunications.brands.agents.associateDialogflow',
+        ordered_params=['agent'],
+        path_params=['agent'],
+        query_params=[],
+        relative_path='v1/{+agent}:associateDialogflow',
+        request_field='associateDialogflowRequest',
+        request_type_name='BusinesscommunicationsBrandsAgentsAssociateDialogflowRequest',
+        response_type_name='DialogflowAssociation',
+        supports_download=False,
+    )
 
     def Create(self, request, global_params=None):
       r"""Creates a new agent to represent a brand.
@@ -104,6 +246,33 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
         relative_path='v1/{+name}',
         request_field='',
         request_type_name='BusinesscommunicationsBrandsAgentsDeleteRequest',
+        response_type_name='Empty',
+        supports_download=False,
+    )
+
+    def DissociateDialogflow(self, request, global_params=None):
+      r"""Dissociate a Dialogflow project from an agent. The dissociation may take 2-3 minutes. To check the dissociation status, get the agent data and check the agent's `dialogflowAssociation.operationInfo`.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsDissociateDialogflowRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Empty) The response message.
+      """
+      config = self.GetMethodConfig('DissociateDialogflow')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    DissociateDialogflow.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}:dissociateDialogflow',
+        http_method='POST',
+        method_id='businesscommunications.brands.agents.dissociateDialogflow',
+        ordered_params=['agent'],
+        path_params=['agent'],
+        query_params=[],
+        relative_path='v1/{+agent}:dissociateDialogflow',
+        request_field='dissociateDialogflowRequest',
+        request_type_name='BusinesscommunicationsBrandsAgentsDissociateDialogflowRequest',
         response_type_name='Empty',
         supports_download=False,
     )
@@ -294,6 +463,33 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
         request_field='requestAgentVerificationRequest',
         request_type_name='BusinesscommunicationsBrandsAgentsRequestVerificationRequest',
         response_type_name='AgentVerification',
+        supports_download=False,
+    )
+
+    def UpdateDialogflowAssociation(self, request, global_params=None):
+      r"""Update Dialogflow association settings for an agent.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsUpdateDialogflowAssociationRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (DialogflowAssociation) The response message.
+      """
+      config = self.GetMethodConfig('UpdateDialogflowAssociation')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    UpdateDialogflowAssociation.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/dialogflowAssociation',
+        http_method='PATCH',
+        method_id='businesscommunications.brands.agents.updateDialogflowAssociation',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=['updateMask'],
+        relative_path='v1/{+name}',
+        request_field='dialogflowAssociation',
+        request_type_name='BusinesscommunicationsBrandsAgentsUpdateDialogflowAssociationRequest',
+        response_type_name='DialogflowAssociation',
         supports_download=False,
     )
 
@@ -835,5 +1031,41 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
         request_field='partner',
         request_type_name='BusinesscommunicationsPartnersPatchRequest',
         response_type_name='Partner',
+        supports_download=False,
+    )
+
+  class SurveyQuestionsService(base_api.BaseApiService):
+    """Service class for the surveyQuestions resource."""
+
+    _NAME = 'surveyQuestions'
+
+    def __init__(self, client):
+      super(BusinesscommunicationsV1.SurveyQuestionsService, self).__init__(client)
+      self._upload_configs = {
+          }
+
+    def List(self, request, global_params=None):
+      r"""Lists all Google predefined survey questions. *Note*: This method always sets `pageSize` to `0`.
+
+      Args:
+        request: (BusinesscommunicationsSurveyQuestionsListRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (ListSurveyQuestionsResponse) The response message.
+      """
+      config = self.GetMethodConfig('List')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    List.method_config = lambda: base_api.ApiMethodInfo(
+        http_method='GET',
+        method_id='businesscommunications.surveyQuestions.list',
+        ordered_params=[],
+        path_params=[],
+        query_params=['locale'],
+        relative_path='v1/surveyQuestions',
+        request_field='',
+        request_type_name='BusinesscommunicationsSurveyQuestionsListRequest',
+        response_type_name='ListSurveyQuestionsResponse',
         supports_download=False,
     )
