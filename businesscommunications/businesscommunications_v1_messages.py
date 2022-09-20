@@ -69,8 +69,8 @@ class AgentVerification(_messages.Message):
       VERIFICATION_STATE_VERIFIED: Verification complete.
       VERIFICATION_STATE_SUSPENDED_IN_GMB: Indicates the associated Google My
         Business listing is no longer verified, a requirement for verification
-        in Business Communications. Reverifying in Google My Business will
-        automatically reverify here. Only applicable for Locations.
+        in Business Communications. Reverifying in Google My Business
+        automatically reverifies here. Only applicable for locations.
     """
     VERIFICATION_STATE_UNSPECIFIED = 0
     VERIFICATION_STATE_UNVERIFIED = 1
@@ -174,7 +174,7 @@ class Brand(_messages.Message):
   agent.
 
   Fields:
-    displayName: Required. The display name of the brand. Maximum 40
+    displayName: Required. The display name of the brand. Maximum 100
       characters.
     name: Output only. The unique identifier of the brand. Defined by the
       platform.
@@ -347,6 +347,10 @@ class BusinessMessagesEntryPointLaunch(_messages.Message):
       LAUNCH_STATE_REJECTED: Launch is rejected.
       LAUNCH_STATE_SUSPENDED: Launch is suspended.
       LAUNCH_STATE_PENDING_UNLAUNCH: Unlaunch in review.
+      LAUNCH_STATE_INVALID_IN_GMB: Launch is invalid because the associated
+        Google My Business Listing doesn't support messaging. Reverifying in
+        Google My Business automatically relaunches here. Only applicable for
+        locations.
     """
     LAUNCH_STATE_UNSPECIFIED = 0
     LAUNCH_STATE_UNLAUNCHED = 1
@@ -355,6 +359,7 @@ class BusinessMessagesEntryPointLaunch(_messages.Message):
     LAUNCH_STATE_REJECTED = 4
     LAUNCH_STATE_SUSPENDED = 5
     LAUNCH_STATE_PENDING_UNLAUNCH = 6
+    LAUNCH_STATE_INVALID_IN_GMB = 7
 
   entryPoint = _messages.EnumField('EntryPointValueValuesEnum', 1)
   launchState = _messages.EnumField('LaunchStateValueValuesEnum', 2)
@@ -535,6 +540,87 @@ class BusinesscommunicationsBrandsAgentsGetVerificationRequest(_messages.Message
   """
 
   name = _messages.StringField(1, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsIntegrationsCreateRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsIntegrationsCreateRequest object.
+
+  Fields:
+    integration: A Integration resource to be passed as the request body.
+    parent: Required. The unique identifier of the agent. If the brand
+      identifier is "1234" and the agent identifier is "5678", this parameter
+      resolves to "brands/1234/agents/5678".
+  """
+
+  integration = _messages.MessageField('Integration', 1)
+  parent = _messages.StringField(2, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsIntegrationsDeleteRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsIntegrationsDeleteRequest object.
+
+  Fields:
+    name: Required. The unique identifier of the integration. If the brand
+      identifier is "1234", the agent identifier is "5678", and the
+      integration identifier is "9092", this parameter resolves to
+      "brands/1234/agents/5678/integrations/9092".
+  """
+
+  name = _messages.StringField(1, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsIntegrationsGetRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsIntegrationsGetRequest object.
+
+  Fields:
+    name: Required. The unique identifier of the integration. If the brand
+      identifier is "1234", the agent identifier is "5678", and the
+      integration identifier is "9092", this parameter resolves to
+      "brands/1234/agents/5678/integrations/9092".
+  """
+
+  name = _messages.StringField(1, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsIntegrationsListRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsIntegrationsListRequest object.
+
+  Fields:
+    pageSize: Currently this field is unsupported because the number of agent-
+      level integrations is too few for pagination to be needed. This field
+      will be ignored if passed. Specify the maximum number of results for the
+      server to return. The server may further limit the maximum number of
+      results returned per page. If the page_size is 0, the server will decide
+      how many results are returned. Optional
+    pageToken: Currently this field is unsupported as the number of agent-
+      level integrations is too few for pagination to be needed. This field
+      will be ignored if passed. The next_page_token value returned from a
+      previous List request, if any. Optional
+    parent: Required. The unique identifier of the agent. If the brand
+      identifier is "1234" and the agent identifier is "5678", this parameter
+      resolves to "brands/1234/agents/5678".
+  """
+
+  pageSize = _messages.IntegerField(1, variant=_messages.Variant.INT32)
+  pageToken = _messages.StringField(2)
+  parent = _messages.StringField(3, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsIntegrationsPatchRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsIntegrationsPatchRequest object.
+
+  Fields:
+    integration: A Integration resource to be passed as the request body.
+    name: Output only. The unique identifier of the integration. Read-only.
+      Defined by the platform.
+    updateMask: Required. The update mask applies to the resource. For the
+      FieldMask definition, see https://developers.google.com/protocol-
+      buffers/docs/reference/google.protobuf#fieldmask
+  """
+
+  integration = _messages.MessageField('Integration', 1)
+  name = _messages.StringField(2, required=True)
+  updateMask = _messages.StringField(3)
 
 
 class BusinesscommunicationsBrandsAgentsListRequest(_messages.Message):
@@ -866,7 +952,7 @@ class BusinesscommunicationsPartnersPatchRequest(_messages.Message):
   r"""A BusinesscommunicationsPartnersPatchRequest object.
 
   Fields:
-    name: Output only. The unique identifier of the partner. Defined by the
+    name: Immutable. The unique identifier of the partner. Defined by the
       platform.
     partner: A Partner resource to be passed as the request body.
     updateMask: The update mask applies to the resource. For the FieldMask
@@ -1006,6 +1092,142 @@ class DialogflowAssociation(_messages.Message):
   operationInfo = _messages.MessageField('OperationInfo', 6)
 
 
+class DialogflowCxIntegration(_messages.Message):
+  r"""Information about a Business Messages agent and Dialogflow CX project
+  association.
+
+  Enums:
+    AutoResponseStatusValueValuesEnum: Required. If `ENABLED`, Business
+      Messages automatically sends the Dialogflow responses to users.
+
+  Fields:
+    autoResponseStatus: Required. If `ENABLED`, Business Messages
+      automatically sends the Dialogflow responses to users.
+    dialogflowAgentId: Required. The Dialogflow Agent ID.
+    dialogflowProjectId: Required. The Dialogflow project ID. Non-editable. To
+      change this value, you must delete the Dialogflow project from this
+      agent, then create a new integration.
+    dialogflowServiceAccountEmail: Output only. The service account that must
+      be configured in the Dialogflow project with the "Dialogflow Console
+      Agent Editor" and "Dialogflow API Client" roles. This is required to
+      provide access to the Dialogflow API.
+    operationInfo: Output only. Information about the operating state of the
+      Dialogflow integration.
+  """
+
+  class AutoResponseStatusValueValuesEnum(_messages.Enum):
+    r"""Required. If `ENABLED`, Business Messages automatically sends the
+    Dialogflow responses to users.
+
+    Values:
+      AUTO_RESPONSE_STATUS_UNSPECIFIED: Auto-response is unspecified.
+      ENABLED: Auto-response is enabled.
+      DISABLED: Auto-response is disabled.
+    """
+    AUTO_RESPONSE_STATUS_UNSPECIFIED = 0
+    ENABLED = 1
+    DISABLED = 2
+
+  autoResponseStatus = _messages.EnumField('AutoResponseStatusValueValuesEnum', 1)
+  dialogflowAgentId = _messages.StringField(2)
+  dialogflowProjectId = _messages.StringField(3)
+  dialogflowServiceAccountEmail = _messages.StringField(4)
+  operationInfo = _messages.MessageField('OperationInfo', 5)
+
+
+class DialogflowDocument(_messages.Message):
+  r"""A knowledge base document. A document can be either a website URL or a
+  URL to a CSV file. URLs must be publicly available. CSV files must contain
+  one or more question/answer pairs, with one row for each pair.
+
+  Fields:
+    displayName: Required. Display name of a FAQ document.
+    faqUrl: URL of a FAQ document.
+    name: System-generated Document ID. If the brand identifier is "1234", the
+      agent identifier is "5678", the integration identifier is "9092", the
+      knowledge base identifier is "1111", and the document identifier is
+      "2222", this parameter resolves to "brands/1234/agents/5678/integrations
+      /9092/knowledgebases/1111/documents/2222".
+    operationInfo: Output only. Operation Information is populated only when a
+      document is added to an existing knowledge base.
+    rawContent: The raw content of the document.
+    updateTime: Output only. Time at which the document was created/updated.
+  """
+
+  displayName = _messages.StringField(1)
+  faqUrl = _messages.StringField(2)
+  name = _messages.StringField(3)
+  operationInfo = _messages.MessageField('OperationInfo', 4)
+  rawContent = _messages.BytesField(5)
+  updateTime = _messages.StringField(6)
+
+
+class DialogflowEsIntegration(_messages.Message):
+  r"""Information about a Business Messages agent and Dialogflow ES project
+  association.
+
+  Enums:
+    AutoResponseStatusValueValuesEnum: Required. If `ENABLED`, Business
+      Messages automatically sends the Dialogflow responses to users.
+
+  Fields:
+    autoResponseStatus: Required. If `ENABLED`, Business Messages
+      automatically sends the Dialogflow responses to users.
+    dialogflowKnowledgeBases: Knowledge bases associated with the Dialogflow
+      project. Optional
+    dialogflowProjectId: Required. The Dialogflow project ID. Non-editable. To
+      change this value, you must delete the Dialogflow project from this
+      agent, then create a new integration.
+    dialogflowServiceAccountEmail: Output only. The service account that must
+      be configured in the Dialogflow project with the "Dialogflow Console
+      Agent Editor" and "Dialogflow API Client" roles. This is required to
+      provide access to the Dialogflow API.
+    operationInfo: Output only. Information about the operating state of the
+      Dialogflow integration.
+  """
+
+  class AutoResponseStatusValueValuesEnum(_messages.Enum):
+    r"""Required. If `ENABLED`, Business Messages automatically sends the
+    Dialogflow responses to users.
+
+    Values:
+      AUTO_RESPONSE_STATUS_UNSPECIFIED: Auto-response is unspecified.
+      ENABLED: Auto-response is enabled.
+      DISABLED: Auto-response is disabled.
+    """
+    AUTO_RESPONSE_STATUS_UNSPECIFIED = 0
+    ENABLED = 1
+    DISABLED = 2
+
+  autoResponseStatus = _messages.EnumField('AutoResponseStatusValueValuesEnum', 1)
+  dialogflowKnowledgeBases = _messages.MessageField('DialogflowKnowledgebase', 2, repeated=True)
+  dialogflowProjectId = _messages.StringField(3)
+  dialogflowServiceAccountEmail = _messages.StringField(4)
+  operationInfo = _messages.MessageField('OperationInfo', 5)
+
+
+class DialogflowKnowledgebase(_messages.Message):
+  r"""Knowledge base information. A knowledge base can have multiple FAQ URLs.
+
+  Fields:
+    displayName: Required. Knowledge base display name.
+    documents: Knowledge base documents. Optional
+    name: Output only. Knowledgebase ID. Unique identifier returned by
+      Dialogflow service after creation of a knowledge base. If the brand
+      identifier is "1234", the agent identifier is "5678", the integration
+      identifier is "9092", and the knowledge base identifier is "1111", this
+      parameter resolves to
+      "brands/1234/agents/5678/integrations/9092/knowledgebases/1111".
+    updateTime: Output only. Time at which the knowledge base was created or
+      updated.
+  """
+
+  displayName = _messages.StringField(1)
+  documents = _messages.MessageField('DialogflowDocument', 2, repeated=True)
+  name = _messages.StringField(3)
+  updateTime = _messages.StringField(4)
+
+
 class DissociateDialogflowRequest(_messages.Message):
   r"""Request to dissociate a Dialogflow project from an agent."""
 
@@ -1039,8 +1261,7 @@ class Empty(_messages.Message):
   r"""A generic empty message that you can re-use to avoid defining duplicated
   empty messages in your APIs. A typical example is to use it as the request
   or the response type of an API method. For instance: service Foo { rpc
-  Bar(google.protobuf.Empty) returns (google.protobuf.Empty); } The JSON
-  representation for `Empty` is empty JSON object `{}`.
+  Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
   """
 
 
@@ -1122,6 +1343,40 @@ class HumanRepresentative(_messages.Message):
   humanMessagingAvailability = _messages.MessageField('MessagingAvailability', 1)
 
 
+class Integration(_messages.Message):
+  r"""Information about the integration.
+
+  Enums:
+    StatusValueValuesEnum: Output only. Integration status.
+
+  Fields:
+    dialogflowCxIntegration: Information about an associated Dialogflow CX
+      project. https://cloud.google.com/dialogflow/cx/docs/basics
+    dialogflowEsIntegration: Information about an associated Dialogflow ES
+      project. https://cloud.google.com/dialogflow/es/docs
+    name: Output only. The unique identifier of the integration. Read-only.
+      Defined by the platform.
+    status: Output only. Integration status.
+  """
+
+  class StatusValueValuesEnum(_messages.Enum):
+    r"""Output only. Integration status.
+
+    Values:
+      INTEGRATION_STATUS_UNSPECIFIED: Integration status is unspecified.
+      ENABLED: Enabled.
+      DISABLED: Disabled.
+    """
+    INTEGRATION_STATUS_UNSPECIFIED = 0
+    ENABLED = 1
+    DISABLED = 2
+
+  dialogflowCxIntegration = _messages.MessageField('DialogflowCxIntegration', 1)
+  dialogflowEsIntegration = _messages.MessageField('DialogflowEsIntegration', 2)
+  name = _messages.StringField(3)
+  status = _messages.EnumField('StatusValueValuesEnum', 4)
+
+
 class Knowledgebase(_messages.Message):
   r"""Knowledge base information. A knowledge base can have multiple FAQ URLs.
 
@@ -1167,6 +1422,21 @@ class ListBrandsResponse(_messages.Message):
   nextPageToken = _messages.StringField(2)
 
 
+class ListIntegrationsResponse(_messages.Message):
+  r"""Response for ListIntegrations.
+
+  Fields:
+    integrations: List of integrations.
+    nextPageToken: Currently this field is unsupported because the number of
+      agent-level integrations is too few for pagination to be needed. The
+      pagination token to retrieve the next page of results. If the value is
+      "", it means no further results for the request.
+  """
+
+  integrations = _messages.MessageField('Integration', 1, repeated=True)
+  nextPageToken = _messages.StringField(2)
+
+
 class ListLocationsResponse(_messages.Message):
   r"""A list of locations.
 
@@ -1209,8 +1479,8 @@ class Location(_messages.Message):
     defaultLocale: Required. The default locale for the location.
     listingId: Output only. Identifies the Google My Business Listing this
       Location is associated with.
-    locationEntryPointConfigs: Required. List of entry point configurations
-      for locations. Not modifiable after being available to users through an
+    locationEntryPointConfigs: List of entry point configurations for
+      locations. Not modifiable after being available to users through an
       agent.
     locationTestUrl: Output only. The URL for testing the location's
       conversational experience. Defined by the platform.
@@ -1314,6 +1584,10 @@ class LocationLaunch(_messages.Message):
       LAUNCH_STATE_REJECTED: Launch is rejected.
       LAUNCH_STATE_SUSPENDED: Launch is suspended.
       LAUNCH_STATE_PENDING_UNLAUNCH: Unlaunch in review.
+      LAUNCH_STATE_INVALID_IN_GMB: Launch is invalid because the associated
+        Google My Business Listing doesn't support messaging. Reverifying in
+        Google My Business automatically relaunches here. Only applicable for
+        locations.
     """
     LAUNCH_STATE_UNSPECIFIED = 0
     LAUNCH_STATE_UNLAUNCHED = 1
@@ -1322,6 +1596,7 @@ class LocationLaunch(_messages.Message):
     LAUNCH_STATE_REJECTED = 4
     LAUNCH_STATE_SUSPENDED = 5
     LAUNCH_STATE_PENDING_UNLAUNCH = 6
+    LAUNCH_STATE_INVALID_IN_GMB = 7
 
   launchState = _messages.EnumField('LaunchStateValueValuesEnum', 1)
   name = _messages.StringField(2)
@@ -1348,8 +1623,8 @@ class LocationVerification(_messages.Message):
       VERIFICATION_STATE_VERIFIED: Verification complete.
       VERIFICATION_STATE_SUSPENDED_IN_GMB: Indicates the associated Google My
         Business listing is no longer verified, a requirement for verification
-        in Business Communications. Reverifying in Google My Business will
-        automatically reverify here. Only applicable for Locations.
+        in Business Communications. Reverifying in Google My Business
+        automatically reverifies here. Only applicable for locations.
     """
     VERIFICATION_STATE_UNSPECIFIED = 0
     VERIFICATION_STATE_UNVERIFIED = 1
@@ -1368,7 +1643,10 @@ class MessagingAvailability(_messages.Message):
   15:00\u201318:00 hrs PDT Thursday\u2013Friday * 10:00\u201314:00 hrs PDT
   Saturday\u2013Saturday If there are gaps in availability, such as no
   specified availability on Sunday, messaging is unavailable during those
-  gaps.
+  gaps. Bot hours have no effect on availability. Bot-only agents always
+  display a welcome message, while agents with both human and bot
+  representative settings only consider human representatives when defining
+  availability.
 
   Fields:
     hours: Required. Hours of messaging availability.
@@ -1481,17 +1759,21 @@ class Partner(_messages.Message):
   Fields:
     company: Optional. The company name of the partner.
     contactEmails: Optional. The list of contact emails.
+    dialogflowServiceAccountEmail: Output only. Service account with access to
+      the Dialogflow Client API role. This account is created by the platform
+      and provides access to Dialogflow.
     displayName: Required. The display name of the partner.
-    name: Output only. The unique identifier of the partner. Defined by the
+    name: Immutable. The unique identifier of the partner. Defined by the
       platform.
     productCapabilities: The product capabilities of the partner.
   """
 
   company = _messages.StringField(1)
   contactEmails = _messages.StringField(2, repeated=True)
-  displayName = _messages.StringField(3)
-  name = _messages.StringField(4)
-  productCapabilities = _messages.MessageField('ProductCapability', 5, repeated=True)
+  dialogflowServiceAccountEmail = _messages.StringField(3)
+  displayName = _messages.StringField(4)
+  name = _messages.StringField(5)
+  productCapabilities = _messages.MessageField('ProductCapability', 6, repeated=True)
 
 
 class Phone(_messages.Message):
@@ -1963,6 +2245,10 @@ class VerifiedCallsLaunch(_messages.Message):
       LAUNCH_STATE_REJECTED: Launch is rejected.
       LAUNCH_STATE_SUSPENDED: Launch is suspended.
       LAUNCH_STATE_PENDING_UNLAUNCH: Unlaunch in review.
+      LAUNCH_STATE_INVALID_IN_GMB: Launch is invalid because the associated
+        Google My Business Listing doesn't support messaging. Reverifying in
+        Google My Business automatically relaunches here. Only applicable for
+        locations.
     """
     LAUNCH_STATE_UNSPECIFIED = 0
     LAUNCH_STATE_UNLAUNCHED = 1
@@ -1971,6 +2257,7 @@ class VerifiedCallsLaunch(_messages.Message):
     LAUNCH_STATE_REJECTED = 4
     LAUNCH_STATE_SUSPENDED = 5
     LAUNCH_STATE_PENDING_UNLAUNCH = 6
+    LAUNCH_STATE_INVALID_IN_GMB = 7
 
   launchState = _messages.EnumField('LaunchStateValueValuesEnum', 1)
 
@@ -2019,8 +2306,7 @@ class WelcomeMessage(_messages.Message):
   agent for the first time.
 
   Fields:
-    text: Required. The text of the welcome message. Maximum length 1000
-      characters.
+    text: Text message. Maximum length 1000 characters.
   """
 
   text = _messages.StringField(1)

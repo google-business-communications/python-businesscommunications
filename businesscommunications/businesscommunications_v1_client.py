@@ -17,8 +17,8 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
   _PACKAGE = 'businesscommunications'
   _SCOPES = ['https://www.googleapis.com/auth/userinfo.email']
   _VERSION = 'v1'
-  _CLIENT_ID = '1042881264118.apps.googleusercontent.com'
-  _CLIENT_SECRET = 'x_Tw5K8nnjoRAqULM9PFAC2b'
+  _CLIENT_ID = 'CLIENT_ID'
+  _CLIENT_SECRET = 'CLIENT_SECRET'
   _USER_AGENT = 'x_Tw5K8nnjoRAqULM9PFAC2b'
   _CLIENT_CLASS_NAME = 'BusinesscommunicationsV1'
   _URL_VERSION = 'v1'
@@ -42,6 +42,7 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
     self.brands_agents_dialogflowAssociation_knowledgebases_documents = self.BrandsAgentsDialogflowAssociationKnowledgebasesDocumentsService(self)
     self.brands_agents_dialogflowAssociation_knowledgebases = self.BrandsAgentsDialogflowAssociationKnowledgebasesService(self)
     self.brands_agents_dialogflowAssociation = self.BrandsAgentsDialogflowAssociationService(self)
+    self.brands_agents_integrations = self.BrandsAgentsIntegrationsService(self)
     self.brands_agents = self.BrandsAgentsService(self)
     self.brands_locations = self.BrandsLocationsService(self)
     self.brands = self.BrandsService(self)
@@ -158,6 +159,151 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
       super(BusinesscommunicationsV1.BrandsAgentsDialogflowAssociationService, self).__init__(client)
       self._upload_configs = {
           }
+
+  class BrandsAgentsIntegrationsService(base_api.BaseApiService):
+    """Service class for the brands_agents_integrations resource."""
+
+    _NAME = 'brands_agents_integrations'
+
+    def __init__(self, client):
+      super(BusinesscommunicationsV1.BrandsAgentsIntegrationsService, self).__init__(client)
+      self._upload_configs = {
+          }
+
+    def Create(self, request, global_params=None):
+      r"""Create an integration.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsIntegrationsCreateRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Integration) The response message.
+      """
+      config = self.GetMethodConfig('Create')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Create.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/integrations',
+        http_method='POST',
+        method_id='businesscommunications.brands.agents.integrations.create',
+        ordered_params=['parent'],
+        path_params=['parent'],
+        query_params=[],
+        relative_path='v1/{+parent}/integrations',
+        request_field='integration',
+        request_type_name='BusinesscommunicationsBrandsAgentsIntegrationsCreateRequest',
+        response_type_name='Integration',
+        supports_download=False,
+    )
+
+    def Delete(self, request, global_params=None):
+      r"""Delete an integration.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsIntegrationsDeleteRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Empty) The response message.
+      """
+      config = self.GetMethodConfig('Delete')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Delete.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/integrations/{integrationsId}',
+        http_method='DELETE',
+        method_id='businesscommunications.brands.agents.integrations.delete',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=[],
+        relative_path='v1/{+name}',
+        request_field='',
+        request_type_name='BusinesscommunicationsBrandsAgentsIntegrationsDeleteRequest',
+        response_type_name='Empty',
+        supports_download=False,
+    )
+
+    def Get(self, request, global_params=None):
+      r"""Get an integration.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsIntegrationsGetRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Integration) The response message.
+      """
+      config = self.GetMethodConfig('Get')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Get.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/integrations/{integrationsId}',
+        http_method='GET',
+        method_id='businesscommunications.brands.agents.integrations.get',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=[],
+        relative_path='v1/{+name}',
+        request_field='',
+        request_type_name='BusinesscommunicationsBrandsAgentsIntegrationsGetRequest',
+        response_type_name='Integration',
+        supports_download=False,
+    )
+
+    def List(self, request, global_params=None):
+      r"""List integrations.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsIntegrationsListRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (ListIntegrationsResponse) The response message.
+      """
+      config = self.GetMethodConfig('List')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    List.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/integrations',
+        http_method='GET',
+        method_id='businesscommunications.brands.agents.integrations.list',
+        ordered_params=['parent'],
+        path_params=['parent'],
+        query_params=['pageSize', 'pageToken'],
+        relative_path='v1/{+parent}/integrations',
+        request_field='',
+        request_type_name='BusinesscommunicationsBrandsAgentsIntegrationsListRequest',
+        response_type_name='ListIntegrationsResponse',
+        supports_download=False,
+    )
+
+    def Patch(self, request, global_params=None):
+      r"""Update an integration. For adding a DialogflowDocument, only the "dialogflow_es_integration.dialogflow_knowledge_bases" flag should be specified. Adding a document should be an isolated update.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsIntegrationsPatchRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Integration) The response message.
+      """
+      config = self.GetMethodConfig('Patch')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Patch.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/integrations/{integrationsId}',
+        http_method='PATCH',
+        method_id='businesscommunications.brands.agents.integrations.patch',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=['updateMask'],
+        relative_path='v1/{+name}',
+        request_field='integration',
+        request_type_name='BusinesscommunicationsBrandsAgentsIntegrationsPatchRequest',
+        response_type_name='Integration',
+        supports_download=False,
+    )
 
   class BrandsAgentsService(base_api.BaseApiService):
     """Service class for the brands_agents resource."""
