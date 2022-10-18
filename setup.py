@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="google-businesscommunications",
-    version="1.1.0",
+    version="2.0.0",
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     description="Google's Business Communications API client library",

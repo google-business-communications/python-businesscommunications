@@ -139,16 +139,6 @@ class ApprovalDetails(_messages.Message):
   approvalState = _messages.EnumField('ApprovalStateValueValuesEnum', 2)
 
 
-class AssociateDialogflowRequest(_messages.Message):
-  r"""Request to associate a Dialogflow project with an agent.
-
-  Fields:
-    dialogflowAssociation: Dialogflow association details.
-  """
-
-  dialogflowAssociation = _messages.MessageField('DialogflowAssociation', 1)
-
-
 class AuthorizationConfig(_messages.Message):
   r"""Configuration details for supporting OAuth on Business Messages.
 
@@ -206,8 +196,6 @@ class BusinessMessagesAgent(_messages.Message):
       identifier is passed alongside all messages sent to the agent.
     defaultLocale: Required. The default locale for the agent. Must match a
       locale defined in `conversationalSettings`.
-    dialogflowAssociation: Optional. Information about Business
-      Messages/Dialogflow Association.
     entryPointConfigs: Optional. List of entry point configurations. Not
       modifiable after agent verification.
     logoUrl: Optional. Publicly available URL of the logo for the agent.
@@ -258,14 +246,13 @@ class BusinessMessagesAgent(_messages.Message):
   conversationalSettings = _messages.MessageField('ConversationalSettingsValue', 4)
   customAgentId = _messages.StringField(5)
   defaultLocale = _messages.StringField(6)
-  dialogflowAssociation = _messages.MessageField('DialogflowAssociation', 7)
-  entryPointConfigs = _messages.MessageField('BusinessMessagesEntryPointConfig', 8, repeated=True)
-  logoUrl = _messages.StringField(9)
-  nonLocalConfig = _messages.MessageField('NonLocalConfig', 10)
-  phone = _messages.MessageField('Phone', 11)
-  primaryAgentInteraction = _messages.MessageField('SupportedAgentInteraction', 12)
-  surveyConfig = _messages.MessageField('SurveyConfig', 13)
-  testUrls = _messages.MessageField('TestUrl', 14, repeated=True)
+  entryPointConfigs = _messages.MessageField('BusinessMessagesEntryPointConfig', 7, repeated=True)
+  logoUrl = _messages.StringField(8)
+  nonLocalConfig = _messages.MessageField('NonLocalConfig', 9)
+  phone = _messages.MessageField('Phone', 10)
+  primaryAgentInteraction = _messages.MessageField('SupportedAgentInteraction', 11)
+  surveyConfig = _messages.MessageField('SurveyConfig', 12)
+  testUrls = _messages.MessageField('TestUrl', 13, repeated=True)
 
 
 class BusinessMessagesCapability(_messages.Message):
@@ -407,21 +394,6 @@ class BusinessMessagesLaunch(_messages.Message):
   launchDetails = _messages.MessageField('LaunchDetailsValue', 1)
 
 
-class BusinesscommunicationsBrandsAgentsAssociateDialogflowRequest(_messages.Message):
-  r"""A BusinesscommunicationsBrandsAgentsAssociateDialogflowRequest object.
-
-  Fields:
-    agent: Required. The unique identifier of the agent. If the brand
-      identifier is "1234" and the agent identifier is "5678", this parameter
-      resolves to "brands/1234/agents/5678".
-    associateDialogflowRequest: A AssociateDialogflowRequest resource to be
-      passed as the request body.
-  """
-
-  agent = _messages.StringField(1, required=True)
-  associateDialogflowRequest = _messages.MessageField('AssociateDialogflowRequest', 2)
-
-
 class BusinesscommunicationsBrandsAgentsCreateRequest(_messages.Message):
   r"""A BusinesscommunicationsBrandsAgentsCreateRequest object.
 
@@ -445,69 +417,6 @@ class BusinesscommunicationsBrandsAgentsDeleteRequest(_messages.Message):
   """
 
   name = _messages.StringField(1, required=True)
-
-
-class BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesCreateRequest(_messages.Message):
-  r"""A BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesC
-  reateRequest object.
-
-  Fields:
-    knowledgebase: A Knowledgebase resource to be passed as the request body.
-    parent: Required. The unique identifier of the association between the
-      agent and the Dialogflow project that the knowledge base belongs to. If
-      the brand identifier is "1234" and the agent identifier is "5678", this
-      parameter resolves to "brands/1234/agents/5678/dialogflowAssociation".
-  """
-
-  knowledgebase = _messages.MessageField('Knowledgebase', 1)
-  parent = _messages.StringField(2, required=True)
-
-
-class BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesDocumentsCreateRequest(_messages.Message):
-  r"""A BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesD
-  ocumentsCreateRequest object.
-
-  Fields:
-    document: A Document resource to be passed as the request body.
-    parent: Required. The unique identifier of the knowledge base that
-      document represents. If the brand identifier is "1234", the agent
-      identifier is "5678" and knowledge base identifier is "002", this field
-      resolves to
-      "brands/1234/agents/5678/dialogflowAssociation/knowledgebases/002".
-  """
-
-  document = _messages.MessageField('Document', 1)
-  parent = _messages.StringField(2, required=True)
-
-
-class BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesDocumentsDeleteRequest(_messages.Message):
-  r"""A BusinesscommunicationsBrandsAgentsDialogflowAssociationKnowledgebasesD
-  ocumentsDeleteRequest object.
-
-  Fields:
-    name: Required. The unique identifier of the document. If the brand
-      identifier is "1234", the agent identifier is "5678", knowledgebase
-      identifier is "002" and document identifier is "005", this field
-      resolves to "brands/1234/agents/5678/dialogflowAssociation/knowledgebase
-      s/002/documents/005".
-  """
-
-  name = _messages.StringField(1, required=True)
-
-
-class BusinesscommunicationsBrandsAgentsDissociateDialogflowRequest(_messages.Message):
-  r"""A BusinesscommunicationsBrandsAgentsDissociateDialogflowRequest object.
-
-  Fields:
-    agent: Required. The unique identifier of the agent. If the brand
-      identifier is "1234" and the agent identifier is "5678", this field
-      resolves to "brands/1234/agents/5678".
-    dissociateDialogflowRequest: A DissociateDialogflowRequest resource to be
-      passed as the request body.
-  """
-
-  agent = _messages.StringField(1, required=True)
-  dissociateDialogflowRequest = _messages.MessageField('DissociateDialogflowRequest', 2)
 
 
 class BusinesscommunicationsBrandsAgentsGetLaunchRequest(_messages.Message):
@@ -685,24 +594,6 @@ class BusinesscommunicationsBrandsAgentsRequestVerificationRequest(_messages.Mes
 
   name = _messages.StringField(1, required=True)
   requestAgentVerificationRequest = _messages.MessageField('RequestAgentVerificationRequest', 2)
-
-
-class BusinesscommunicationsBrandsAgentsUpdateDialogflowAssociationRequest(_messages.Message):
-  r"""A BusinesscommunicationsBrandsAgentsUpdateDialogflowAssociationRequest
-  object.
-
-  Fields:
-    dialogflowAssociation: A DialogflowAssociation resource to be passed as
-      the request body.
-    name: Output only. The identifier for the Dialogflow association.
-    updateMask: The update mask applies to the resource. For the FieldMask
-      definition, see https://developers.google.com/protocol-
-      buffers/docs/reference/google.protobuf#fieldmask
-  """
-
-  dialogflowAssociation = _messages.MessageField('DialogflowAssociation', 1)
-  name = _messages.StringField(2, required=True)
-  updateMask = _messages.StringField(3)
 
 
 class BusinesscommunicationsBrandsAgentsUpdateLaunchRequest(_messages.Message):
@@ -1065,33 +956,6 @@ class CustomSurveyConfig(_messages.Message):
   customQuestions = _messages.MessageField('SurveyQuestion', 1, repeated=True)
 
 
-class DialogflowAssociation(_messages.Message):
-  r"""Information about an associated Dialogflow project and knowledge base.
-
-  Fields:
-    dfProjectId: Required. The Dialogflow project ID. Non-editable. To change
-      this value, you must disassociate the Dialogflow project from this
-      agent, then create a new association.
-    dfServiceAccountEmail: Output only. The service account that must be
-      configured in the Dialogflow project with the "Dialogflow Console Agent
-      Editor" role. This is required to provide access to the Dialogflow API.
-    enableAutoResponse: If `true`, Business Messages automatically sends the
-      Dialogflow responses to users.
-    knowledgeBases: Output only. Knowledge bases associated with the
-      Dialogflow project.
-    name: Output only. The identifier for the Dialogflow association.
-    operationInfo: Output only. The Dialogflow association operation
-      information.
-  """
-
-  dfProjectId = _messages.StringField(1)
-  dfServiceAccountEmail = _messages.StringField(2)
-  enableAutoResponse = _messages.BooleanField(3)
-  knowledgeBases = _messages.MessageField('Knowledgebase', 4, repeated=True)
-  name = _messages.StringField(5)
-  operationInfo = _messages.MessageField('OperationInfo', 6)
-
-
 class DialogflowCxIntegration(_messages.Message):
   r"""Information about a Business Messages agent and Dialogflow CX project
   association.
@@ -1228,35 +1092,6 @@ class DialogflowKnowledgebase(_messages.Message):
   updateTime = _messages.StringField(4)
 
 
-class DissociateDialogflowRequest(_messages.Message):
-  r"""Request to dissociate a Dialogflow project from an agent."""
-
-
-class Document(_messages.Message):
-  r"""A knowledge base document. A document can be either a website URL or a
-  URL to a CSV file. URLs must be publicly available. CSV files must contain
-  one or more question/answer pairs, with one row for each pair.
-
-  Fields:
-    displayName: Required. Display name of a FAQ document.
-    faqUrl: URL of a FAQ document.
-    name: Output only. Document ID. Unique identifier returned by Dialogflow
-      service, after creation of a document Format - projects/{project}/dialog
-      flowAssociation/knowledgebases/{knowledgebase}/documents/{document}
-    operationInfo: Output only. Operation Information is populated only when a
-      document is added to an existing knowledge base.
-    rawContent: The raw content of the document.
-    updateTime: Output only. Time at which the document was created/updated.
-  """
-
-  displayName = _messages.StringField(1)
-  faqUrl = _messages.StringField(2)
-  name = _messages.StringField(3)
-  operationInfo = _messages.MessageField('OperationInfo', 4)
-  rawContent = _messages.BytesField(5)
-  updateTime = _messages.StringField(6)
-
-
 class Empty(_messages.Message):
   r"""A generic empty message that you can re-use to avoid defining duplicated
   empty messages in your APIs. A typical example is to use it as the request
@@ -1375,25 +1210,6 @@ class Integration(_messages.Message):
   dialogflowEsIntegration = _messages.MessageField('DialogflowEsIntegration', 2)
   name = _messages.StringField(3)
   status = _messages.EnumField('StatusValueValuesEnum', 4)
-
-
-class Knowledgebase(_messages.Message):
-  r"""Knowledge base information. A knowledge base can have multiple FAQ URLs.
-
-  Fields:
-    displayName: Required. Knowledge base display name.
-    documents: Output only. Knowledge base documents.
-    name: Output only. Knowledge base ID. Unique identifier returned by
-      Dialogflow service, after creation of a knowledge base. Format -
-      projects//knowledgeBases/.
-    updateTime: Output only. Time at which the knowledge base was created or
-      updated.
-  """
-
-  displayName = _messages.StringField(1)
-  documents = _messages.MessageField('Document', 2, repeated=True)
-  name = _messages.StringField(3)
-  updateTime = _messages.StringField(4)
 
 
 class ListAgentsResponse(_messages.Message):
