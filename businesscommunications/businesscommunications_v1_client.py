@@ -39,12 +39,131 @@ class BusinesscommunicationsV1(base_api.BaseApiClient):
         default_global_params=default_global_params,
         additional_http_headers=additional_http_headers,
         response_encoding=response_encoding)
+    self.brands_agents_greetings = self.BrandsAgentsGreetingsService(self)
     self.brands_agents_integrations = self.BrandsAgentsIntegrationsService(self)
     self.brands_agents = self.BrandsAgentsService(self)
     self.brands_locations = self.BrandsLocationsService(self)
     self.brands = self.BrandsService(self)
     self.partners = self.PartnersService(self)
     self.surveyQuestions = self.SurveyQuestionsService(self)
+
+  class BrandsAgentsGreetingsService(base_api.BaseApiService):
+    """Service class for the brands_agents_greetings resource."""
+
+    _NAME = 'brands_agents_greetings'
+
+    def __init__(self, client):
+      super(BusinesscommunicationsV1.BrandsAgentsGreetingsService, self).__init__(client)
+      self._upload_configs = {
+          }
+
+    def Create(self, request, global_params=None):
+      r"""Creates a new greeting for an agent.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsGreetingsCreateRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Greeting) The response message.
+      """
+      config = self.GetMethodConfig('Create')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Create.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/greetings',
+        http_method='POST',
+        method_id='businesscommunications.brands.agents.greetings.create',
+        ordered_params=['parent'],
+        path_params=['parent'],
+        query_params=[],
+        relative_path='v1/{+parent}/greetings',
+        request_field='greeting',
+        request_type_name='BusinesscommunicationsBrandsAgentsGreetingsCreateRequest',
+        response_type_name='Greeting',
+        supports_download=False,
+    )
+
+    def Get(self, request, global_params=None):
+      r"""Gets the greeting information for an agent.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsGreetingsGetRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Greeting) The response message.
+      """
+      config = self.GetMethodConfig('Get')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Get.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/greetings/{greetingsId}',
+        http_method='GET',
+        method_id='businesscommunications.brands.agents.greetings.get',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=[],
+        relative_path='v1/{+name}',
+        request_field='',
+        request_type_name='BusinesscommunicationsBrandsAgentsGreetingsGetRequest',
+        response_type_name='Greeting',
+        supports_download=False,
+    )
+
+    def List(self, request, global_params=None):
+      r"""Lists all greetings associated with an agent. *Note*: This method always sets `pageSize` to `0`.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsGreetingsListRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (ListGreetingsResponse) The response message.
+      """
+      config = self.GetMethodConfig('List')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    List.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/greetings',
+        http_method='GET',
+        method_id='businesscommunications.brands.agents.greetings.list',
+        ordered_params=['parent'],
+        path_params=['parent'],
+        query_params=['pageSize', 'pageToken'],
+        relative_path='v1/{+parent}/greetings',
+        request_field='',
+        request_type_name='BusinesscommunicationsBrandsAgentsGreetingsListRequest',
+        response_type_name='ListGreetingsResponse',
+        supports_download=False,
+    )
+
+    def Patch(self, request, global_params=None):
+      r"""Updates the information about a greeting. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
+
+      Args:
+        request: (BusinesscommunicationsBrandsAgentsGreetingsPatchRequest) input message
+        global_params: (StandardQueryParameters, default: None) global arguments
+      Returns:
+        (Greeting) The response message.
+      """
+      config = self.GetMethodConfig('Patch')
+      return self._RunMethod(
+          config, request, global_params=global_params)
+
+    Patch.method_config = lambda: base_api.ApiMethodInfo(
+        flat_path='v1/brands/{brandsId}/agents/{agentsId}/greetings/{greetingsId}',
+        http_method='PATCH',
+        method_id='businesscommunications.brands.agents.greetings.patch',
+        ordered_params=['name'],
+        path_params=['name'],
+        query_params=['updateMask'],
+        relative_path='v1/{+name}',
+        request_field='greeting',
+        request_type_name='BusinesscommunicationsBrandsAgentsGreetingsPatchRequest',
+        response_type_name='Greeting',
+        supports_download=False,
+    )
 
   class BrandsAgentsIntegrationsService(base_api.BaseApiService):
     """Service class for the brands_agents_integrations resource."""

@@ -451,6 +451,70 @@ class BusinesscommunicationsBrandsAgentsGetVerificationRequest(_messages.Message
   name = _messages.StringField(1, required=True)
 
 
+class BusinesscommunicationsBrandsAgentsGreetingsCreateRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsGreetingsCreateRequest object.
+
+  Fields:
+    greeting: A Greeting resource to be passed as the request body.
+    parent: Required. The unique identifier of the agent associated with the
+      greeting. If the brand ID is "1234" and the agent ID is "5678", this
+      parameter resolves to "brands/1234/agents/5678".
+  """
+
+  greeting = _messages.MessageField('Greeting', 1)
+  parent = _messages.StringField(2, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsGreetingsGetRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsGreetingsGetRequest object.
+
+  Fields:
+    name: Required. The unique identifier of the greeting. If the brand ID is
+      "1234", agent ID is "5678", and greeting ID is "abcd", this parameter
+      resolves to "brands/1234/agents/5678/greetings/abcd".
+  """
+
+  name = _messages.StringField(1, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsGreetingsListRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsGreetingsListRequest object.
+
+  Fields:
+    pageSize: Specify the maximum number of results for the server to return.
+      The server may limit the number of results returned per page. If the
+      page_size is 0, the server will decide how many results to return.
+    pageToken: The next_page_token value returned from a previous List
+      request, if any.
+    parent: Required. The unique identifier of the agent. If the brand ID is
+      "1234" and agent ID is "5678", this parameter resolves to
+      "brands/1234/agents/5678".
+  """
+
+  pageSize = _messages.IntegerField(1, variant=_messages.Variant.INT32)
+  pageToken = _messages.StringField(2)
+  parent = _messages.StringField(3, required=True)
+
+
+class BusinesscommunicationsBrandsAgentsGreetingsPatchRequest(_messages.Message):
+  r"""A BusinesscommunicationsBrandsAgentsGreetingsPatchRequest object.
+
+  Fields:
+    greeting: A Greeting resource to be passed as the request body.
+    name: Output only. The name of the greeting, as set by Business Messages.
+      Resolves to
+      "brands/{brand_id}/agents/{agent_id}/greetings/{greeting_id}" where
+      {greeting_id} is the unique ID of the greeting.
+    updateMask: The update mask applies to the resource. For the FieldMask
+      definition, see https://developers.google.com/protocol-
+      buffers/docs/reference/google.protobuf#fieldmask
+  """
+
+  greeting = _messages.MessageField('Greeting', 1)
+  name = _messages.StringField(2, required=True)
+  updateMask = _messages.StringField(3)
+
+
 class BusinesscommunicationsBrandsAgentsIntegrationsCreateRequest(_messages.Message):
   r"""A BusinesscommunicationsBrandsAgentsIntegrationsCreateRequest object.
 
@@ -1101,6 +1165,279 @@ class Empty(_messages.Message):
 
 
 
+class GoogleCommunicationsBusinessmessagesV1AuthenticationRequest(_messages.Message):
+  r"""Request to authenticate a conversation.
+
+  Fields:
+    oauth: Details for authentication via OAuth.
+  """
+
+  oauth = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1AuthenticationRequestOauth', 1)
+
+
+class GoogleCommunicationsBusinessmessagesV1AuthenticationRequestOauth(_messages.Message):
+  r"""Details for authentication via OAuth.
+
+  Fields:
+    clientId: Required. The [ID](https://www.oauth.com/oauth2-servers/client-
+      registration/client-id-secret/) of the application that asks for
+      authorization.
+    codeChallenge: Required. The [code
+      challenge](https://tools.ietf.org/html/rfc7636#section-4.2) used to
+      exchange access tokens.
+    codeChallengeMethod: Optional. The [code challenge
+      method](https://www.oauth.com/oauth2-servers/pkce/authorization-
+      request/) used to generate the code challenge. If this parameter is
+      omitted, the server assumes `plain`.
+    scopes: Required. An array that specifies the
+      [scopes](https://oauth.net/2/scope/) of the request.
+  """
+
+  clientId = _messages.StringField(1)
+  codeChallenge = _messages.StringField(2)
+  codeChallengeMethod = _messages.StringField(3)
+  scopes = _messages.StringField(4, repeated=True)
+
+
+class GoogleCommunicationsBusinessmessagesV1CardContent(_messages.Message):
+  r"""Card content.
+
+  Fields:
+    description: Optional. Description of the card. Maximum 2,000 characters.
+    media: Optional. Media to include in the card.
+    suggestions: Optional. List of suggestions to include in the card. Maximum
+      4 suggestions.
+    title: Optional. Title of the card. Maximum 200 characters.
+  """
+
+  description = _messages.StringField(1)
+  media = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1Media', 2)
+  suggestions = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1Suggestion', 3, repeated=True)
+  title = _messages.StringField(4)
+
+
+class GoogleCommunicationsBusinessmessagesV1CarouselCard(_messages.Message):
+  r"""Carousel of cards.
+
+  Enums:
+    CardWidthValueValuesEnum: The width of the cards in the carousel.
+
+  Fields:
+    cardContents: The list of contents for each card in the carousel. A
+      carousel can have a minimum of 2 cards and a maximum 10 cards.
+    cardWidth: The width of the cards in the carousel.
+  """
+
+  class CardWidthValueValuesEnum(_messages.Enum):
+    r"""The width of the cards in the carousel.
+
+    Values:
+      CARD_WIDTH_UNSPECIFIED: Not specified
+      SMALL: 136 DP. Can't include tall media.
+      MEDIUM: 280 DP.
+    """
+    CARD_WIDTH_UNSPECIFIED = 0
+    SMALL = 1
+    MEDIUM = 2
+
+  cardContents = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1CardContent', 1, repeated=True)
+  cardWidth = _messages.EnumField('CardWidthValueValuesEnum', 2)
+
+
+class GoogleCommunicationsBusinessmessagesV1ContentInfo(_messages.Message):
+  r"""Message containing the content information.
+
+  Fields:
+    altText: Text describing the details about the media for accessibility
+      purposes.
+    fileUrl: Publicly reachable URL of the file. The platform determines the
+      MIME type of the file from the content-type field in the HTTP headers
+      when the platform fetches the file. The content-type field must be
+      present and accurate in the HTTP response from the URL. Maximum 5 MB.
+      Supported content types: image/jpeg, image/jpg, image/png, image/webp
+    forceRefresh: If set, the platform fetches the file and thumbnail from the
+      specified URLs, even if the platform has cached copies of the file
+      (and/or of the thumbnail).
+    thumbnailUrl: Optional. Publicly reachable URL of the thumbnail. If you
+      don't provide a thumbnail URL, the platform displays a blank placeholder
+      thumbnail until the user's device downloads the file. Maximum 25 KB.
+      Supported content types: image/jpeg, image/jpg, image/png, image/webp
+  """
+
+  altText = _messages.StringField(1)
+  fileUrl = _messages.StringField(2)
+  forceRefresh = _messages.BooleanField(3)
+  thumbnailUrl = _messages.StringField(4)
+
+
+class GoogleCommunicationsBusinessmessagesV1DialAction(_messages.Message):
+  r"""Opens the user's default dialer app with the specified phone number
+  filled in.
+
+  Fields:
+    phoneNumber: Required. The specified phone number, in [RFC
+      3966](https://tools.ietf.org/html/rfc3966) format. For example,
+      "+1-201-555-0123".
+  """
+
+  phoneNumber = _messages.StringField(1)
+
+
+class GoogleCommunicationsBusinessmessagesV1Image(_messages.Message):
+  r"""An image.
+
+  Fields:
+    contentInfo: Information about an image, including the URL of the image
+      and the URL of the image's thumbnail.
+  """
+
+  contentInfo = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1ContentInfo', 1)
+
+
+class GoogleCommunicationsBusinessmessagesV1LiveAgentRequest(_messages.Message):
+  r"""When tapped, sends a request for a live agent to join the conversation.
+  """
+
+
+
+class GoogleCommunicationsBusinessmessagesV1Media(_messages.Message):
+  r"""A media file within a rich card.
+
+  Enums:
+    HeightValueValuesEnum: The height of the media within a rich card.
+
+  Fields:
+    contentInfo: Information about a file, including the URL of the file and
+      the URL of the file's thumbnail.
+    height: The height of the media within a rich card.
+  """
+
+  class HeightValueValuesEnum(_messages.Enum):
+    r"""The height of the media within a rich card.
+
+    Values:
+      HEIGHT_UNSPECIFIED: Not specified.
+      SHORT: 112 DP.
+      MEDIUM: 168 DP.
+      TALL: 264 DP. Not available for rich card carousels when the card width
+        is set to SMALL.
+    """
+    HEIGHT_UNSPECIFIED = 0
+    SHORT = 1
+    MEDIUM = 2
+    TALL = 3
+
+  contentInfo = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1ContentInfo', 1)
+  height = _messages.EnumField('HeightValueValuesEnum', 2)
+
+
+class GoogleCommunicationsBusinessmessagesV1OpenUrlAction(_messages.Message):
+  r"""Opens the specified URL.
+
+  Fields:
+    url: URL
+  """
+
+  url = _messages.StringField(1)
+
+
+class GoogleCommunicationsBusinessmessagesV1RichCard(_messages.Message):
+  r"""A standalone rich card or a carousel of rich cards sent from the agent
+  to the user.
+
+  Fields:
+    carouselCard: Carousel of cards.
+    standaloneCard: Standalone card.
+  """
+
+  carouselCard = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1CarouselCard', 1)
+  standaloneCard = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1StandaloneCard', 2)
+
+
+class GoogleCommunicationsBusinessmessagesV1StandaloneCard(_messages.Message):
+  r"""Standalone card.
+
+  Fields:
+    cardContent: Card content.
+  """
+
+  cardContent = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1CardContent', 1)
+
+
+class GoogleCommunicationsBusinessmessagesV1SuggestedAction(_messages.Message):
+  r"""When tapped, initiates the corresponding native action on the device.
+
+  Fields:
+    dialAction: Opens the user's default dialer app.
+    openUrlAction: Opens the specified URL.
+    postbackData: The string that the agent receives when a user taps the
+      suggested action. Maximum 2,048 characters.
+    text: Text that is shown in the suggested action. Maximum 25 characters.
+  """
+
+  dialAction = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1DialAction', 1)
+  openUrlAction = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1OpenUrlAction', 2)
+  postbackData = _messages.StringField(3)
+  text = _messages.StringField(4)
+
+
+class GoogleCommunicationsBusinessmessagesV1SuggestedReply(_messages.Message):
+  r"""When tapped, sends the text reply back to the agent.
+
+  Fields:
+    postbackData: The string that the agent receives when a user taps the
+      suggested reply. Maximum 2,048 characters.
+    text: Text that is shown in the suggested reply and sent to the agent when
+      the user taps it. Maximum 25 characters.
+  """
+
+  postbackData = _messages.StringField(1)
+  text = _messages.StringField(2)
+
+
+class GoogleCommunicationsBusinessmessagesV1Suggestion(_messages.Message):
+  r"""A suggestion within a chip list.
+
+  Fields:
+    action: A suggested action that initiates a native action on the device.
+    authenticationRequest: A request to start authentication flow.
+    liveAgentRequest: A request to have a live agent join the conversation.
+    reply: A suggestion for the user to reply with specified text.
+  """
+
+  action = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1SuggestedAction', 1)
+  authenticationRequest = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1AuthenticationRequest', 2)
+  liveAgentRequest = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1LiveAgentRequest', 3)
+  reply = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1SuggestedReply', 4)
+
+
+class Greeting(_messages.Message):
+  r"""Details about a greeting.
+
+  Fields:
+    adLink: Output only. The ad link corresponding to this greeting (go/bm-
+      link-spec).
+    conversationStarters: Optional. Details about the conversation starters.
+      Maximum 5.
+    customId: Optional. A custom identifier defined by the partner.
+    locale: Required. The locale is a well-formed IETF BCP 47 language tag. It
+      must match a locale defined in {@link ConversationalSettings}.
+    name: Output only. The name of the greeting, as set by Business Messages.
+      Resolves to
+      "brands/{brand_id}/agents/{agent_id}/greetings/{greeting_id}" where
+      {greeting_id} is the unique ID of the greeting.
+    welcomeMessages: Required. Welcome message content. A greeting must have
+      at least one welcome message defined.
+  """
+
+  adLink = _messages.StringField(1)
+  conversationStarters = _messages.MessageField('ConversationStarters', 2, repeated=True)
+  customId = _messages.StringField(3)
+  locale = _messages.StringField(4)
+  name = _messages.StringField(5)
+  welcomeMessages = _messages.MessageField('WelcomeMessage', 6, repeated=True)
+
+
 class Hours(_messages.Message):
   r"""A range of hours that messaging is available.
 
@@ -1235,6 +1572,19 @@ class ListBrandsResponse(_messages.Message):
   """
 
   brands = _messages.MessageField('Brand', 1, repeated=True)
+  nextPageToken = _messages.StringField(2)
+
+
+class ListGreetingsResponse(_messages.Message):
+  r"""The list of greetings associated with the agent.
+
+  Fields:
+    greetings: The list of greetings.
+    nextPageToken: The pagination token to retrieve the next page of results.
+      If the value is "", there are no more results for the request.
+  """
+
+  greetings = _messages.MessageField('Greeting', 1, repeated=True)
   nextPageToken = _messages.StringField(2)
 
 
@@ -2122,10 +2472,16 @@ class WelcomeMessage(_messages.Message):
   agent for the first time.
 
   Fields:
+    image: Image message.
+    richCard: Rich card message. Could be either standalone card or carousel.
+    richText: Rich text message in valid markdown formatting.
     text: Text message. Maximum length 1000 characters.
   """
 
-  text = _messages.StringField(1)
+  image = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1Image', 1)
+  richCard = _messages.MessageField('GoogleCommunicationsBusinessmessagesV1RichCard', 2)
+  richText = _messages.StringField(3)
+  text = _messages.StringField(4)
 
 
 encoding.AddCustomJsonFieldMapping(
